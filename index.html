@@ -1,90 +1,32 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Your Things | Online Grocery Store</title>
-<style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f5f7f2;color:#222}
-header{background:#168447;color:white;padding:20px;text-align:center}
-header h1{margin:0;font-size:30px}
-header p{margin:8px 0 0}
-.search{padding:15px;text-align:center}
-input{padding:12px;width:90%;max-width:450px;border:1px solid #ccc;border-radius:8px}
-.hero{background:#e0f4df;padding:25px 15px;text-align:center}
-.hero h2{color:#126b38}
-.products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:15px}
-.product{background:white;padding:14px;border-radius:12px;text-align:center;box-shadow:0 2px 7px #ddd}
-.emoji{font-size:42px}
-.product h3{margin:8px 0}
-.price{font-weight:bold;color:#168447}
-button{background:#168447;color:white;border:0;border-radius:7px;padding:10px;cursor:pointer}
-.cart{background:white;margin:15px;padding:18px;border-radius:12px}
-footer{text-align:center;padding:20px;background:#163e2a;color:white}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Your Things Grocery</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #f4fff4;
+      padding: 30px 15px;
+    }
+    h1 { color: #16833b; }
+    button {
+      background: #16833b;
+      color: white;
+      padding: 12px 22px;
+      border: none;
+      border-radius: 8px;
+    }
+  </style>
 </head>
 <body>
-<header>
-<h1>🛒 Your Things</h1>
-<p>Your Daily Needs, Delivered Locally!</p>
-</header>
-<div class="search">
-<input id="search" placeholder="Search groceries..." oninput="showProducts()">
-</div>
-<section class="hero">
-<h2>Freshness at Your Doorstep!</h2>
-<p>Daily essentials at affordable prices.</p>
-<p><b>Local delivery available</b></p>
-</section>
-<main class="products" id="products"></main>
-<section class="cart">
-<h2>🛍️ Your Cart</h2>
-<div id="cart">Your cart is empty.</div>
-<h3 id="total">Total: ₹0</h3>
-<button onclick="checkout()">Order on WhatsApp</button>
-<p><small>Set your store WhatsApp number in the website code before accepting orders.</small></p>
-</section>
-<footer>
-<p>© 2026 Your Things</p>
-<p>Thank you for shopping with us!</p>
-</footer>
-<script>
-const items=[
-{name:"Rice (1 kg)",price:60,emoji:"🍚"},
-{name:"Wheat Flour (1 kg)",price:45,emoji:"🌾"},
-{name:"Milk (1 litre)",price:30,emoji:"🥛"},
-{name:"Eggs (6 pieces)",price:42,emoji:"🥚"},
-{name:"Apples (1 kg)",price:120,emoji:"🍎"},
-{name:"Bananas (1 dozen)",price:60,emoji:"🍌"},
-{name:"Potatoes (1 kg)",price:30,emoji:"🥔"},
-{name:"Tomatoes (1 kg)",price:35,emoji:"🍅"},
-{name:"Cooking Oil (1 litre)",price:140,emoji:"🫗"},
-{name:"Sugar (1 kg)",price:45,emoji:"🧂"},
-{name:"Bread",price:35,emoji:"🍞"},
-{name:"Biscuits",price:20,emoji:"🍪"}
-];
-let cart={};
-function showProducts(){
-const q=document.getElementById("search").value.toLowerCase();
-document.getElementById("products").innerHTML=items.filter(p=>p.name.toLowerCase().includes(q)).map(p=>`<div class="product"><div class="emoji">${p.emoji}</div><h3>${p.name}</h3><p class="price">₹${p.price}</p><button onclick="add('${p.name}')">Add to Cart</button></div>`).join("");
-}
-function add(name){cart[name]=(cart[name]||0)+1;showCart()}
-function showCart(){
-let names=Object.keys(cart);
-document.getElementById("cart").innerHTML=names.length?names.map(n=>`${n} × ${cart[n]} <button onclick="removeItem('${n}')">−</button> <button onclick="add('${n}')">+</button>`).join("<br><br>"):"Your cart is empty.";
-let total=names.reduce((s,n)=>s+items.find(p=>p.name===n).price*cart[n],0);
-document.getElementById("total").textContent="Total: ₹"+total;
-}
-function removeItem(n){cart[n]--;if(cart[n]<=0)delete cart[n];showCart()}
-function checkout(){
-let names=Object.keys(cart);
-if(!names.length){alert("Please add products to your cart first.");return}
-let msg="Hello Your Things! I want to order:\n"+names.map(n=>n+" x "+cart[n]).join("\n")+"\n"+document.getElementById("total").textContent;
-alert("Your cart is ready. The store WhatsApp number must be configured before orders can be sent.");
-}
-showProducts();
-</script>
+  <h1>Your Things</h1>
+  <h2>Fresh groceries at your doorstep!</h2>
+  <p>Your online grocery store is starting here.</p>
+  <button onclick="alert('Welcome to Your Things!')">
+    Start Shopping
+  </button>
 </body>
 </html>
