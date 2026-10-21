@@ -84,7 +84,7 @@ const items=[
 {id:18,name:"Detergent Powder",price:70,emoji:"🧺"}
 ];
 
-let cart={};
+let cart={};show products (){
 https://images.unsplash.com/photo-1566040081794-16550083ad4e?auto=format&fit=crop&fm=jpg&q=80&w=500
 function add(id){cart[id]=(cart[id]||0)+1;showCart();}
 function change(id,n){cart[id]=(cart[id]||0)+n;if(cart[id]<=0)delete cart[id];showCart();}
@@ -95,7 +95,7 @@ document.getElementById("cartitems").innerHTML=list.length?list.map(p=>`
 <span><button onclick="change(${p.id},-1)">−</button>
 <button onclick="change(${p.id},1)">+</button></span></div>`).join(""):"Your cart is empty.";
 document.getElementById("total").textContent="Total: ₹"+list.reduce((s,p)=>s+p.price*cart[p.id],0);
-}
+
 
 document.getElementById("orderform").addEventListener("submit", function(e) {
   e.preventDefault();
