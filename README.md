@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your Things Grocery</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f5f7f5;color:#222}
+header{background:#087b3b;color:white;padding:18px}
+header h1{margin:0}
+header p{margin:6px 0}
+.search{padding:12px;width:100%;border:1px solid #ddd;border-radius:10px;font-size:16px}
+main{padding:14px;max-width:900px;margin:auto}
+h2{color:#087b3b}
+.products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.card{background:white;padding:14px;border-radius:12px;box-shadow:0 2px 8px #ddd}
+.emoji{font-size:42px}
+.price{font-weight:bold;color:#087b3b}
+button{background:#087b3b;color:white;border:0;border-radius:8px;padding:10px;cursor:pointer}
+.card button{width:100%}
+section{background:white;padding:15px;margin-top:18px;border-radius:12px}
+input,textarea,select{width:100%;padding:11px;margin:6px 0;border:1px solid #ccc;border-radius:8px}
+.cartrow{display:flex;justify-content:space-between;gap:8px;margin:12px 0}
+.small{font-size:13px;color:#555}
+footer{text-align:center;padding:20px;color:#666}
+</style>
+</head>
+<body>
+<header>
+<h1>🛒 Your Things</h1>
+<p>Fresh groceries at your doorstep!</p>
+<p>Local grocery delivery</p>
+</header>
+<main>
+<input class="search" id="search" placeholder="Search groceries..." oninput="showProducts()">
+<h2>Shop groceries</h2>
+<div class="products" id="products"></div>
+
+<section id="cart">
+<h2>🛍️ Your Cart</h2>
+<div id="cartitems">Your cart is empty.</div>
+<h3 id="total">Total: ₹0</h3>
+</section>
+
+<section>
+<h2>📦 Checkout</h2>
+<form id="orderform">
+<input id="customer" placeholder="Your full name" required>
+<input id="phone" placeholder="10-digit mobile number" inputmode="numeric" pattern="[0-9]{10}" required>
+<textarea id="address" placeholder="Full delivery address" required></textarea>
+<select id="payment">
+<option value="COD">Cash on Delivery (COD)</option>
+<option value="UPI">UPI (payment setup required)</option>
+</select>
+<button type="submit">Place order</button>
+</form>
+
+<div id="result"></div>
+</section>
+</main>
+<footer>© Your Things Grocery</footer>
+
+<script>
+
+const items=[
+{id:1,name:"Pepsi",price:40,emoji:"🥤"},
+{id:2,name:"Coca-Cola",price:40,emoji:"🥤"},
+{id:3,name:"MTR Masala",price:60,emoji:"🌶️"},
+{id:4,name:"Rice 1 kg",price:65,emoji:"🍚"},
+{id:5,name:"Aashirvaad Atta 1 kg",price:60,emoji:"🌾"},
+{id:6,name:"Sunflower Oil 1 L",price:140,emoji:"🛢️"},
+{id:7,name:"Milk",price:30,emoji:"🥛"},
+{id:8,name:"Biscuits",price:20,emoji:"🍪"},
+{id:9,name:"Lays Chips",price:20,emoji:"🍟"},
+{id:10,name:"Chocolate",price:40,emoji:"🍫"},
+{id:11,name:"Maggi Noodles",price:15,emoji:"🍜"},
+{id:12,name:"Sugar 1 kg",price:50,emoji:"🧂"},
+{id:13,name:"Salt 1 kg",price:25,emoji:"🧂"},
+{id:14,name:"Tea Powder",price:80,emoji:"🫖"},
+{id:15,name:"Bath Soap",price:35,emoji:"🧼"},
+{id:16,name:"Shampoo",price:60,emoji:"🧴"},
+{id:17,name:"Toothpaste",price:55,emoji:"🪥"},
+{id:18,name:"Detergent Powder",price:70,emoji:"🧺"}
+];
+
+let cart={};show products (){
+https://images.unsplash.com/photo-1566040081794-16550083ad4e?auto=format&fit=crop&fm=jpg&q=80&w=500
+function add(id){cart[id]=(cart[id]||0)+1;showCart();}
+function change(id,n){cart[id]=(cart[id]||0)+n;if(cart[id]<=0)delete cart[id];showCart();}
+function showCart(){
+let list=items.filter(p=>cart[p.id]);
+document.getElementById("cartitems").innerHTML=list.length?list.map(p=>`
+<div class="cartrow"><span>${p.name}<br>₹${p.price} × ${cart[p.id]}</span>
+<span><button onclick="change(${p.id},-1)">−</button>
+<button onclick="change(${p.id},1)">+</button></span></div>`).join(""):"Your cart is empty.";
+document.getElementById("total").textContent="Total: ₹"+list.reduce((s,p)=>s+p.price*cart[p.id],0);
+
+
+document.getElementById("orderform").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  if (Object.keys(cart).length === 0) {
+    alert("Please add products to your cart first.");
+    return;
+  }
+
+  const customer = document.getElementById("customer").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  const address = document.getElementById("address").value.trim();
+  const payment = document.getElementById("payment").value;
+
+  const orderedItems = items
+    .filter(p => cart[p.id])
+    .map(p => p.name + " x " + cart[p.id] +
+      " = ₹" + (p.price * cart[p.id]));
+
+  const total = items.reduce(
+    (sum, p) => sum + p.price * (cart[p.id] || 0), 0
+  );
+
+  const message =
+    "🛒 YOUR THINGS GROCERY ORDER\n\n" +
+    "Customer: " + customer + "\n" +
+    "Phone: " + phone + "\n" +
+    "Delivery address: " + address + "\n\n" +
+    "ORDER ITEMS:\n" + orderedItems.join("\n") + "\n\n" +
+    "Total: ₹" + total + "\n" +
+    "Payment: " +
+    (payment === "UPI"
+      ? "UPI selected (payment not processed online)"
+      : "Cash on Delivery");
+
+  const whatsappURL =
+    "https://wa.me/919448780704?text=" +
+    encodeURIComponent(message);
+
+  window.location.href = whatsappURL;
+});
+showProducts();
+showCart();
+</script>
+</body>
+</html>
