@@ -90,22 +90,46 @@ document.getElementById("cartitems").innerHTML=list.length?list.map(p=>`
 <button onclick="change(${p.id},1)">+</button></span></div>`).join(""):"Your cart is empty.";
 document.getElementById("total").textContent="Total: ₹"+list.reduce((s,p)=>s+p.price*cart[p.id],0);
 }
-document.getElementById("orderform").addEventListener("submit",function(e){
-e.preventDefault();
-if(!Object.keys(cart).length){alert("Please add products to your cart first.");return;}
-const order={
-customer:document.getElementById("customer").value,
-phone:document.getElementById("phone").value,
-address:document.getElementById("address").value,
-payment:document.getElementById("payment").value,
-items:items.filter(p=>cart[p.id]).map(p=>p.name+" x "+cart[p.id]),
-total:items.reduce((s,p)=>s+p.price*(cart[p.id]||0),0)
-};
-if(order.payment==="UPI"){
-document.getElementById("result").textContent="Online payment is not configured. Choose COD until a payment provider is connected.";
-return;
-}
-document.getElementById("result").innerHTML="<h3>Demo order created!</h3><p>Order total: ₹"+order.total+"</p><p>Payment: COD</p><p>Order reference: YT-"+Date.now().toString().slice(-6)+"</p><p>Important: this demo does not send the order to the shop. Contact the store owner separately to confirm.</p>";
+
+document.getElementById("orderform").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  if (Object.keys(cart).length === 0) {
+    alert("Please add products to your cart first.");
+    return;
+  }
+
+  const customer = document.getElementById("customer").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  const address = document.getElementById("address").value.trim();
+  const payment = document.getElementById("payment").value;
+
+  const orderedItems = items
+    .filter(p => cart[p.id])
+    .map(p => p.name + " x " + cart[p.id] +
+      " = ₹" + (p.price * cart[p.id]));
+
+  const total = items.reduce(
+    (sum, p) => sum + p.price * (cart[p.id] || 0), 0
+  );
+
+  const message =
+    "🛒 YOUR THINGS GROCERY ORDER\n\n" +
+    "Customer: " + customer + "\n" +
+    "Phone: " + phone + "\n" +
+    "Delivery address: " + address + "\n\n" +
+    "ORDER ITEMS:\n" + orderedItems.join("\n") + "\n\n" +
+    "Total: ₹" + total + "\n" +
+    "Payment: " +
+    (payment === "UPI"
+      ? "UPI selected (payment not processed online)"
+      : "Cash on Delivery");
+
+  const whatsappURL =
+    "https://wa.me/919448780704?text=" +
+    encodeURIComponent(message);
+
+  window.location.href = whatsappURL;
 });
 showProducts();
 showCart();
