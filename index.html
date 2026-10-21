@@ -1,145 +1,156 @@
-<!DOCTYPE html>lang="en">
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Your Things Grocery</title>
-<style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f5f7f5;color:#222}
-header{background:#087b3b;color:white;padding:18px}
-header h1{margin:0}
-header p{margin:6px 0}
-.search{padding:12px;width:100%;border:1px solid #ddd;border-radius:10px;font-size:16px}
-main{padding:14px;max-width:900px;margin:auto}
-h2{color:#087b3b}
-.products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.card{background:white;padding:14px;border-radius:12px;box-shadow:0 2px 8px #ddd}
-.emoji{font-size:42px}
-.price{font-weight:bold;color:#087b3b}
-button{background:#087b3b;color:white;border:0;border-radius:8px;padding:10px;cursor:pointer}
-.card button{width:100%}
-section{background:white;padding:15px;margin-top:18px;border-radius:12px}
-input,textarea,select{width:100%;padding:11px;margin:6px 0;border:1px solid #ccc;border-radius:8px}
-.cartrow{display:flex;justify-content:space-between;gap:8px;margin:12px 0}
-.small{font-size:13px;color:#555}
-footer{text-align:center;padding:20px;color:#666}
-</style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Things | Groceries & Daily Essentials</title>
+    <script src="https://tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cloudflare.com">
 </head>
-<body>
-<header>
-<h1>🛒 Your Things</h1>
-<p>Fresh groceries at your doorstep!</p>
-<p>Local grocery delivery</p>
-</header>
-<main>
-<input class="search" id="search" placeholder="Search groceries..." oninput="showProducts()">
-<h2>Shop groceries</h2>
-<div class="products" id="products"></div>
+<body class="bg-gray-50 text-gray-800 font-sans">
 
-<section id="cart">
-<h2>🛍️ Your Cart</h2>
-<div id="cartitems">Your cart is empty.</div>
-<h3 id="total">Total: ₹0</h3>
-</section>
+    <!-- Header / Navbar -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex flex-col">
+                <span class="text-xl font-black tracking-tight text-green-600">Your Things</span>
+                <span class="text-xs font-bold text-gray-500 tracking-wider">GROCERY • DAILY NEEDS</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="text-xs text-right hidden sm:block">
+                    <p class="text-gray-400">Delivery to</p>
+                    <p class="font-bold text-gray-700"><i class="fa-solid fa-location-dot text-red-500 mr-1"></i>Hubballi, Karnataka</p>
+                </div>
+                <button class="text-gray-600 hover:text-green-600 p-2"><i class="fa-solid fa-magnifying-glass text-lg"></i></button>
+                <a href="#cart" class="bg-green-100 text-green-700 px-4 py-2 rounded-full font-bold text-sm flex items-center gap-2 hover:bg-green-200 transition">
+                    <i class="fa-solid fa-cart-shopping"></i> Cart <span class="bg-green-700 text-white rounded-full px-2 py-0.5 text-xs">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
 
-<section>
-<h2>📦 Checkout</h2>
-<form id="orderform">
-<input id="customer" placeholder="Your full name" required>
-<input id="phone" placeholder="10-digit mobile number" inputmode="numeric" pattern="[0-9]{10}" required>
-<textarea id="address" placeholder="Full delivery address" required></textarea>
-<select id="payment">
-<option value="COD">Cash on Delivery (COD)</option>
-<option value="UPI">UPI (payment setup required)</option>
-</select>
-<button type="submit">Place order</button>
-</form>
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-br from-green-50 to-emerald-50 border-b border-green-100 py-12 px-4 text-center">
+        <div class="max-w-2xl mx-auto">
+            <span class="text-xs font-bold uppercase tracking-widest text-green-700 bg-green-100 px-3 py-1 rounded-full">Your Daily Needs, One Place</span>
+            <h1 class="text-4xl font-extrabold text-gray-900 mt-4 mb-3 tracking-tight">Groceries delivered to your doorstep.</h1>
+            <p class="text-gray-600 text-lg mb-6">Snacks, drinks, staples, personal care and more.</p>
+            <div class="flex flex-wrap justify-center gap-4 text-sm font-medium text-gray-700">
+                <span class="flex items-center gap-1.5 bg-white shadow-sm px-4 py-2 rounded-lg"><i class="fa-solid fa-bag-shopping text-green-500"></i> Easy ordering</span>
+                <span class="flex items-center gap-1.5 bg-white shadow-sm px-4 py-2 rounded-lg"><i class="fa-brands fa-whatsapp text-emerald-500 font-bold"></i> WhatsApp checkout</span>
+            </div>
+            <div class="text-4xl mt-8 animate-bounce tracking-widest">🥦🥛🍪</div>
+        </div>
+    </section>
 
-<div id="result"></div>
-</section>
-</main>
-<footer>© Your Things Grocery</footer>
+    <!-- Main Content Blueprint Grid -->
+    <main class="max-w-4xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-3 gap-8">
+        
+        <!-- Product & Category Showcase Section -->
+        <div class="md:col-span-2 space-y-10">
+            <!-- Shop By Category Area -->
+            <div>
+                <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                    <span class="w-1.5 h-6 bg-green-600 rounded-full"></span>Shop by category
+                </h2>
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    <!-- Placeholder Category Cards -->
+                    <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition text-center cursor-pointer group">
+                        <div class="text-3xl mb-2 group-hover:scale-110 transition-transform">🥦</div>
+                        <p class="font-semibold text-sm">Fresh Produce</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition text-center cursor-pointer group">
+                        <div class="text-3xl mb-2 group-hover:scale-110 transition-transform">🥛</div>
+                        <p class="font-semibold text-sm">Dairy & Eggs</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition text-center cursor-pointer group">
+                        <div class="text-3xl mb-2 group-hover:scale-110 transition-transform">🍪</div>
+                        <p class="font-semibold text-sm">Snacks & Bakery</p>
+                    </div>
+                </div>
+            </div>
 
-<script>
+            <!-- Popular Products Area -->
+            <div>
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold text-gray-900 flex items-center gap-2">
+                        <span class="w-1.5 h-6 bg-green-600 rounded-full"></span>Popular products
+                    </h2>
+                    <span class="text-xs font-bold text-gray-400 uppercase tracking-wider bg-gray-100 px-2 py-1 rounded">Prices in ₹</span>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Sample Product Item -->
+                    <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex gap-4 items-center">
+                        <div class="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center text-2xl shrink-0">🍎</div>
+                        <div class="flex-1">
+                            <h4 class="font-semibold text-sm text-gray-900">Fresh Red Apples</h4>
+                            <p class="text-xs text-gray-400 mb-1">1 kg</p>
+                            <p class="font-bold text-green-700">₹180</p>
+                        </div>
+                        <button class="bg-green-600 text-white font-bold text-xs px-3 py-2 rounded-lg hover:bg-green-700 transition">ADD</button>
+                    </div>
+                    <!-- Sample Product Item 2 -->
+                    <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex gap-4 items-center">
+                        <div class="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center text-2xl shrink-0">🍞</div>
+                        <div class="flex-1">
+                            <h4 class="font-semibold text-sm text-gray-900">Whole Wheat Bread</h4>
+                            <p class="text-xs text-gray-400 mb-1">400g</p>
+                            <p class="font-bold text-green-700">₹45</p>
+                        </div>
+                        <button class="bg-green-600 text-white font-bold text-xs px-3 py-2 rounded-lg hover:bg-green-700 transition">ADD</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-const items=[
-{id:1,name:"Pepsi",price:40,emoji:"🥤"},
-{id:2,name:"Coca-Cola",price:40,emoji:"🥤"},
-{id:3,name:"MTR Masala",price:60,emoji:"🌶️"},
-{id:4,name:"Rice 1 kg",price:65,emoji:"🍚"},
-{id:5,name:"Aashirvaad Atta 1 kg",price:60,emoji:"🌾"},
-{id:6,name:"Sunflower Oil 1 L",price:140,emoji:"🛢️"},
-{id:7,name:"Milk",price:30,emoji:"🥛"},
-{id:8,name:"Biscuits",price:20,emoji:"🍪"},
-{id:9,name:"Lays Chips",price:20,emoji:"🍟"},
-{id:10,name:"Chocolate",price:40,emoji:"🍫"},
-{id:11,name:"Maggi Noodles",price:15,emoji:"🍜"},
-{id:12,name:"Sugar 1 kg",price:50,emoji:"🧂"},
-{id:13,name:"Salt 1 kg",price:25,emoji:"🧂"},
-{id:14,name:"Tea Powder",price:80,emoji:"🫖"},
-{id:15,name:"Bath Soap",price:35,emoji:"🧼"},
-{id:16,name:"Shampoo",price:60,emoji:"🧴"},
-{id:17,name:"Toothpaste",price:55,emoji:"🪥"},
-{id:18,name:"Detergent Powder",price:70,emoji:"🧺"}
-];
+        <!-- Sidebar Sticky Cart & Checkout System -->
+        <div id="cart" class="md:col-span-1">
+            <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm sticky top-24">
+                <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                    🛒 Your cart
+                </h3>
+                
+                <!-- Empty State Message View -->
+                <div class="py-8 text-center border-2 border-dashed border-gray-100 rounded-xl mb-6">
+                    <p class="text-sm font-medium text-gray-500">Your cart is empty.</p>
+                    <p class="text-xs text-gray-400 mt-1">Add products to get started.</p>
+                </div>
 
-let cart={};show products (){
-https://images.unsplash.com/photo-1566040081794-16550083ad4e?auto=format&fit=crop&fm=jpg&q=80&w=500
-function add(id){cart[id]=(cart[id]||0)+1;showCart();}
-function change(id,n){cart[id]=(cart[id]||0)+n;if(cart[id]<=0)delete cart[id];showCart();}
-function showCart(){
-let list=items.filter(p=>cart[p.id]);
-document.getElementById("cartitems").innerHTML=list.length?list.map(p=>`
-<div class="cartrow"><span>${p.name}<br>₹${p.price} × ${cart[p.id]}</span>
-<span><button onclick="change(${p.id},-1)">−</button>
-<button onclick="change(${p.id},1)">+</button></span></div>`).join(""):"Your cart is empty.";
-document.getElementById("total").textContent="Total: ₹"+list.reduce((s,p)=>s+p.price*cart[p.id],0);
+                <!-- Receipt Pricing Column -->
+                <div class="space-y-2.5 border-b border-gray-100 pb-4 mb-4 text-sm font-medium text-gray-600">
+                    <div class="flex justify-between">
+                        <span>Subtotal</span>
+                        <span class="text-gray-900 font-semibold">₹0</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Delivery fee</span>
+                        <span class="text-gray-900 font-semibold">₹0</span>
+                    </div>
+                    <div class="flex justify-between text-base font-bold text-gray-900 pt-2 border-t border-gray-50">
+                        <span>Total</span>
+                        <span class="text-green-700">₹0</span>
+                    </div>
+                </div>
 
+                <!-- Checkout Process details -->
+                <div class="space-y-4">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-gray-400">Delivery details</h4>
+                    
+                    <!-- Radio group selections -->
+                    <div class="space-y-2">
+                        <label class="flex items-center gap-3 p-3 border border-green-500 bg-green-50/50 rounded-xl cursor-pointer text-sm font-semibold">
+                            <input type="radio" name="payment" value="cod" checked class="accent-green-600 w-4 h-4">
+                            <div class="flex flex-col">
+                                <span>Cash on Delivery</span>
+                            </div>
+                        </label>
+                        <label class="flex items-center gap-3 p-3 border border-gray-200 rounded-xl cursor-pointer text-sm font-medium hover:bg-gray-50 transition">
+                            <input type="radio" name="payment" value="upi" class="accent-green-600 w-4 h-4">
+                            <div class="flex flex-col">
+                                <span>UPI (pay separately)</span>
+                            </div>
+                        </label>
+                    </div>
 
-document.getElementById("orderform").addEventListener("submit", function(e) {
-  e.preventDefault();
-
-  if (Object.keys(cart).length === 0) {
-    alert("Please add products to your cart first.");
-    return;
-  }
-
-  const customer = document.getElementById("customer").value.trim();
-  const phone = document.getElementById("phone").value.trim();
-  const address = document.getElementById("address").value.trim();
-  const payment = document.getElementById("payment").value;
-
-  const orderedItems = items
-    .filter(p => cart[p.id])
-    .map(p => p.name + " x " + cart[p.id] +
-      " = ₹" + (p.price * cart[p.id]));
-
-  const total = items.reduce(
-    (sum, p) => sum + p.price * (cart[p.id] || 0), 0
-  );
-
-  const message =
-    "🛒 YOUR THINGS GROCERY ORDER\n\n" +
-    "Customer: " + customer + "\n" +
-    "Phone: " + phone + "\n" +
-    "Delivery address: " + address + "\n\n" +
-    "ORDER ITEMS:\n" + orderedItems.join("\n") + "\n\n" +
-    "Total: ₹" + total + "\n" +
-    "Payment: " +
-    (payment === "UPI"
-      ? "UPI selected (payment not processed online)"
-      : "Cash on Delivery");
-
-  const whatsappURL =
-    "https://wa.me/919448780704?text=" +
-    encodeURIComponent(message);
-
-  window.location.href = whatsappURL;
-});
-showProducts();
-showCart();
-</script>
-</body>
-</html>
-
-<html 
+                    <!-- Direct Order Action Link -->
+                    <button class="w-full bg-emerald-600 text-white font-bold py-3.5 px-4 rounded-xl shadow-md shadow-emerald-600/20 hover:bg-emerald-700 transition flex items-center justify-center gap-2 group">
