@@ -85,13 +85,7 @@ const items=[
 ];
 
 let cart={};
-function showProducts(){
-const q=document.getElementById("search").value.toLowerCase();
-document.getElementById("products").innerHTML=items.filter(p=>p.name.toLowerCase().includes(q)).map(p=>`
-<div class="card"><div class="emoji">${p.emoji}</div><b>${p.name}</b>
-<p class="price">₹${p.price}</p>
-<button onclick="add(${p.id})">Add to cart</button></div>`).join("");
-}
+https://images.unsplash.com/photo-1566040081794-16550083ad4e?auto=format&fit=crop&fm=jpg&q=80&w=500
 function add(id){cart[id]=(cart[id]||0)+1;showCart();}
 function change(id,n){cart[id]=(cart[id]||0)+n;if(cart[id]<=0)delete cart[id];showCart();}
 function showCart(){
