@@ -1,156 +1,183 @@
-<!DOCTYPE html>
+
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Things | Groceries & Daily Essentials</title>
-    <script src="https://tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cloudflare.com">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0c831f">
+<title>Your Things | Groceries & Daily Essentials</title>
+<style>
+:root{--green:#0c831f;--green2:#e9f8ec;--ink:#172018;--muted:#68736b;--line:#e8ece8;--bg:#f7f8f7}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,Helvetica,sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.top{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
+.topin{max-width:1200px;margin:auto;padding:12px 16px;display:flex;align-items:center;gap:18px}
+.logo{font-size:24px;font-weight:900;color:var(--green);white-space:nowrap}
+.logo span{display:block;font-size:10px;color:#667267;letter-spacing:1.5px}
+.location{font-size:12px;color:var(--muted);min-width:120px}
+.location strong{display:block;color:var(--ink);font-size:14px;margin-bottom:3px}
+.search{flex:1;display:flex;gap:8px;background:#f2f4f2;border:1px solid #e4e8e4;border-radius:12px;padding:11px 12px}
+.search input{border:0;outline:0;background:transparent;width:100%;min-width:0}
+.carttop{background:var(--green);color:white;border:0;border-radius:10px;padding:12px 14px;font-weight:bold;white-space:nowrap}
+.wrap{max-width:1200px;margin:auto;padding:16px}
+.hero{background:linear-gradient(115deg,#d9f4d6,#f5ffdf);border-radius:18px;padding:25px;display:flex;justify-content:space-between;align-items:center;gap:16px;overflow:hidden}
+.hero h1{font-size:clamp(26px,5vw,44px);margin:0 0 8px;line-height:1.05}
+.hero p{margin:0 0 15px;color:#425442}
+.pill{display:inline-block;background:white;border-radius:999px;padding:8px 12px;font-weight:bold;color:var(--green);font-size:13px}
+.heroart{font-size:70px;letter-spacing:-10px;white-space:nowrap}
+.sectionhead{display:flex;justify-content:space-between;align-items:center;margin:24px 0 12px;gap:10px}
+.sectionhead h2{font-size:21px;margin:0}
+.small{font-size:12px;color:var(--muted)}
+.categories{display:flex;gap:10px;overflow:auto;padding:2px 0 8px}
+.cat{min-width:88px;border:1px solid var(--line);background:white;border-radius:14px;padding:10px 8px;text-align:center;color:var(--ink)}
+.cat .emoji{font-size:28px;display:block;margin-bottom:5px}
+.cat.active{border-color:var(--green);background:var(--green2);color:var(--green);font-weight:bold}
+.grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.product{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px;min-width:0;display:flex;flex-direction:column}
+.photo{height:126px;background:#f7f9f6;border-radius:10px;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:10px}
+.photo img{width:100%;height:100%;object-fit:contain}
+.fallback{font-size:56px}
+.brand{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
+.product h3{font-size:14px;line-height:1.3;margin:0 0 5px;min-height:36px}
+.unit{font-size:11px;color:var(--muted);margin-bottom:10px}
+.pricebar{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:auto}
+.price{font-weight:800;font-size:15px}
+.add{border:1px solid var(--green);color:var(--green);background:#fff;border-radius:8px;min-width:66px;padding:8px 10px;font-weight:800}
+.qty{display:flex;align-items:center;border-radius:8px;background:var(--green);color:white;overflow:hidden}
+.qty button{border:0;background:transparent;color:white;font-weight:bold;padding:7px 10px}
+.qty span{min-width:18px;text-align:center;font-weight:bold}
+.empty{background:white;padding:28px;text-align:center;border-radius:14px;color:var(--muted);grid-column:1/-1}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:16px;align-items:start}
+.cartbox{background:#fff;border:1px solid var(--line);border-radius:15px;padding:16px;position:sticky;top:88px}
+.cartbox h2{margin:0 0 12px;font-size:20px}
+.cartempty{text-align:center;padding:18px 0;color:var(--muted)}
+.cartrow{display:grid;grid-template-columns:1fr auto;gap:8px;padding:10px 0;border-bottom:1px solid var(--line)}
+.cartrow strong{font-size:13px}
+.cartrow small{display:block;color:var(--muted);margin-top:4px}
+.cartrow .qty{justify-self:end;align-self:center}
+.totals{padding-top:12px}
+.totalrow{display:flex;justify-content:space-between;margin:9px 0;font-size:14px}
+.grand{font-weight:900;font-size:18px;border-top:1px dashed var(--line);padding-top:12px}
+.checkout{margin-top:16px;border-top:1px solid var(--line);padding-top:14px}
+.checkout h3{margin:0 0 10px}
+.field{display:block;width:100%;padding:11px;border:1px solid #dce2dc;border-radius:9px;margin:8px 0;background:white}
+.paychoice{display:flex;gap:8px;flex-wrap:wrap;font-size:13px}
+.paychoice label{padding:9px;border:1px solid var(--line);border-radius:9px}
+.orderbtn{width:100%;border:0;border-radius:10px;background:var(--green);color:#fff;font-weight:800;padding:13px;margin-top:10px}
+.notice{font-size:11px;line-height:1.5;color:var(--muted);margin-top:10px}
+.footer{text-align:center;color:var(--muted);font-size:12px;padding:28px 10px}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#172018;color:white;padding:12px 16px;border-radius:10px;z-index:30;display:none;max-width:90%;font-size:14px}
+.hide{display:none!important}
+@media(max-width:900px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}.layout{grid-template-columns:1fr}.cartbox{position:static}.topin{gap:10px}.location{display:none}}
+@media(max-width:600px){.topin{flex-wrap:wrap;padding:10px}.logo{font-size:21px}.search{order:3;flex-basis:100%}.carttop{margin-left:auto}.wrap{padding:10px}.hero{padding:18px}.heroart{font-size:48px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.photo{height:120px}.product{padding:8px}.sectionhead h2{font-size:19px}.categories{margin-right:-10px}.cartbox{padding:12px}}
+</style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans">
-
-    <!-- Header / Navbar -->
-    <header class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
-            <div class="flex flex-col">
-                <span class="text-xl font-black tracking-tight text-green-600">Your Things</span>
-                <span class="text-xs font-bold text-gray-500 tracking-wider">GROCERY • DAILY NEEDS</span>
-            </div>
-            <div class="flex items-center space-x-4">
-                <div class="text-xs text-right hidden sm:block">
-                    <p class="text-gray-400">Delivery to</p>
-                    <p class="font-bold text-gray-700"><i class="fa-solid fa-location-dot text-red-500 mr-1"></i>Hubballi, Karnataka</p>
-                </div>
-                <button class="text-gray-600 hover:text-green-600 p-2"><i class="fa-solid fa-magnifying-glass text-lg"></i></button>
-                <a href="#cart" class="bg-green-100 text-green-700 px-4 py-2 rounded-full font-bold text-sm flex items-center gap-2 hover:bg-green-200 transition">
-                    <i class="fa-solid fa-cart-shopping"></i> Cart <span class="bg-green-700 text-white rounded-full px-2 py-0.5 text-xs">0</span>
-                </a>
-            </div>
-        </div>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="bg-gradient-to-br from-green-50 to-emerald-50 border-b border-green-100 py-12 px-4 text-center">
-        <div class="max-w-2xl mx-auto">
-            <span class="text-xs font-bold uppercase tracking-widest text-green-700 bg-green-100 px-3 py-1 rounded-full">Your Daily Needs, One Place</span>
-            <h1 class="text-4xl font-extrabold text-gray-900 mt-4 mb-3 tracking-tight">Groceries delivered to your doorstep.</h1>
-            <p class="text-gray-600 text-lg mb-6">Snacks, drinks, staples, personal care and more.</p>
-            <div class="flex flex-wrap justify-center gap-4 text-sm font-medium text-gray-700">
-                <span class="flex items-center gap-1.5 bg-white shadow-sm px-4 py-2 rounded-lg"><i class="fa-solid fa-bag-shopping text-green-500"></i> Easy ordering</span>
-                <span class="flex items-center gap-1.5 bg-white shadow-sm px-4 py-2 rounded-lg"><i class="fa-brands fa-whatsapp text-emerald-500 font-bold"></i> WhatsApp checkout</span>
-            </div>
-            <div class="text-4xl mt-8 animate-bounce tracking-widest">🥦🥛🍪</div>
-        </div>
-    </section>
-
-    <!-- Main Content Blueprint Grid -->
-    <main class="max-w-4xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-3 gap-8">
-        
-        <!-- Product & Category Showcase Section -->
-        <div class="md:col-span-2 space-y-10">
-            <!-- Shop By Category Area -->
-            <div>
-                <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                    <span class="w-1.5 h-6 bg-green-600 rounded-full"></span>Shop by category
-                </h2>
-                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                    <!-- Placeholder Category Cards -->
-                    <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition text-center cursor-pointer group">
-                        <div class="text-3xl mb-2 group-hover:scale-110 transition-transform">🥦</div>
-                        <p class="font-semibold text-sm">Fresh Produce</p>
-                    </div>
-                    <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition text-center cursor-pointer group">
-                        <div class="text-3xl mb-2 group-hover:scale-110 transition-transform">🥛</div>
-                        <p class="font-semibold text-sm">Dairy & Eggs</p>
-                    </div>
-                    <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition text-center cursor-pointer group">
-                        <div class="text-3xl mb-2 group-hover:scale-110 transition-transform">🍪</div>
-                        <p class="font-semibold text-sm">Snacks & Bakery</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Popular Products Area -->
-            <div>
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-2xl font-bold text-gray-900 flex items-center gap-2">
-                        <span class="w-1.5 h-6 bg-green-600 rounded-full"></span>Popular products
-                    </h2>
-                    <span class="text-xs font-bold text-gray-400 uppercase tracking-wider bg-gray-100 px-2 py-1 rounded">Prices in ₹</span>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <!-- Sample Product Item -->
-                    <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex gap-4 items-center">
-                        <div class="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center text-2xl shrink-0">🍎</div>
-                        <div class="flex-1">
-                            <h4 class="font-semibold text-sm text-gray-900">Fresh Red Apples</h4>
-                            <p class="text-xs text-gray-400 mb-1">1 kg</p>
-                            <p class="font-bold text-green-700">₹180</p>
-                        </div>
-                        <button class="bg-green-600 text-white font-bold text-xs px-3 py-2 rounded-lg hover:bg-green-700 transition">ADD</button>
-                    </div>
-                    <!-- Sample Product Item 2 -->
-                    <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex gap-4 items-center">
-                        <div class="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center text-2xl shrink-0">🍞</div>
-                        <div class="flex-1">
-                            <h4 class="font-semibold text-sm text-gray-900">Whole Wheat Bread</h4>
-                            <p class="text-xs text-gray-400 mb-1">400g</p>
-                            <p class="font-bold text-green-700">₹45</p>
-                        </div>
-                        <button class="bg-green-600 text-white font-bold text-xs px-3 py-2 rounded-lg hover:bg-green-700 transition">ADD</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Sidebar Sticky Cart & Checkout System -->
-        <div id="cart" class="md:col-span-1">
-            <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm sticky top-24">
-                <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                    🛒 Your cart
-                </h3>
-                
-                <!-- Empty State Message View -->
-                <div class="py-8 text-center border-2 border-dashed border-gray-100 rounded-xl mb-6">
-                    <p class="text-sm font-medium text-gray-500">Your cart is empty.</p>
-                    <p class="text-xs text-gray-400 mt-1">Add products to get started.</p>
-                </div>
-
-                <!-- Receipt Pricing Column -->
-                <div class="space-y-2.5 border-b border-gray-100 pb-4 mb-4 text-sm font-medium text-gray-600">
-                    <div class="flex justify-between">
-                        <span>Subtotal</span>
-                        <span class="text-gray-900 font-semibold">₹0</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span>Delivery fee</span>
-                        <span class="text-gray-900 font-semibold">₹0</span>
-                    </div>
-                    <div class="flex justify-between text-base font-bold text-gray-900 pt-2 border-t border-gray-50">
-                        <span>Total</span>
-                        <span class="text-green-700">₹0</span>
-                    </div>
-                </div>
-
-                <!-- Checkout Process details -->
-                <div class="space-y-4">
-                    <h4 class="text-xs font-bold uppercase tracking-wider text-gray-400">Delivery details</h4>
-                    
-                    <!-- Radio group selections -->
-                    <div class="space-y-2">
-                        <label class="flex items-center gap-3 p-3 border border-green-500 bg-green-50/50 rounded-xl cursor-pointer text-sm font-semibold">
-                            <input type="radio" name="payment" value="cod" checked class="accent-green-600 w-4 h-4">
-                            <div class="flex flex-col">
-                                <span>Cash on Delivery</span>
-                            </div>
-                        </label>
-                        <label class="flex items-center gap-3 p-3 border border-gray-200 rounded-xl cursor-pointer text-sm font-medium hover:bg-gray-50 transition">
-                            <input type="radio" name="payment" value="upi" class="accent-green-600 w-4 h-4">
-                            <div class="flex flex-col">
-                                <span>UPI (pay separately)</span>
-                            </div>
-                        </label>
-                    </div>
-
-                    <!-- Direct Order Action Link -->
-                    <button class="w-full bg-emerald-600 text-white font-bold py-3.5 px-4 rounded-xl shadow-md shadow-emerald-600/20 hover:bg-emerald-700 transition flex items-center justify-center gap-2 group">
+<body>
+<header class="top"><div class="topin">
+<div class="logo">Your Things<span>GROCERY • DAILY NEEDS</span></div>
+<div class="location"><strong>Delivery to</strong>Hubballi, Karnataka</div>
+<label class="search" aria-label="Search products">🔎 <input id="search" placeholder="Search for atta, chips, cold drinks..." autocomplete="off"></label>
+<button class="carttop" onclick="document.getElementById('cartPanel').scrollIntoView({behavior:'smooth'})">🛒 Cart <span id="cartCount">0</span></button>
+</div></header>
+<main class="wrap">
+<section class="hero"><div><span class="pill">YOUR DAILY NEEDS, ONE PLACE</span><h1>Groceries delivered<br>to your doorstep.</h1><p>Snacks, drinks, staples, personal care and more.</p><span class="pill">🛍️ Easy ordering • WhatsApp checkout</span></div><div class="heroart" aria-hidden="true">🥦🥛🍪</div></section>
+<div class="sectionhead"><h2>Shop by category</h2><span class="small" id="productCount"></span></div>
+<nav class="categories" id="categories"></nav>
+<div class="layout"><section><div class="sectionhead"><h2 id="listTitle">Popular products</h2><span class="small">Prices in ₹</span></div><div class="grid" id="products"></div></section>
+<aside class="cartbox" id="cartPanel"><h2>🛒 Your cart</h2><div id="cartItems" class="cartempty">Your cart is empty.<br><br>Add products to get started.</div>
+<div id="cartTotals" class="totals hide"><div class="totalrow"><span>Subtotal</span><strong id="subtotal">₹0</strong></div><div class="totalrow"><span>Delivery fee</span><strong id="delivery">₹0</strong></div><div class="totalrow grand"><span>Total</span><strong id="grandTotal">₹0</strong></div></div>
+<form class="checkout" id="checkout"><h3>Delivery details</h3>
+<input class="field" id="customerName" placeholder="Your full name" required maxlength="80">
+<input class="field" id="customerPhone" placeholder="10-digit mobile number" inputmode="numeric" pattern="[6-9][0-9]{9}" required>
+<textarea class="field" id="customerAddress" placeholder="Full delivery address, area and landmark" rows="3" required maxlength="350"></textarea>
+<div class="small">Payment method</div><div class="paychoice" style="margin:8px 0 10px"><label><input type="radio" name="payment" value="Cash on Delivery" checked> Cash on Delivery</label><label><input type="radio" name="payment" value="UPI (pay separately)"> UPI</label></div>
+<button class="orderbtn" type="submit">Place order on WhatsApp</button>
+<p class="notice">WhatsApp opens with your order details ready to send to the shop. Your order is not received until you press Send in WhatsApp. UPI selection does not process or verify a payment. Product availability and final delivery charges must be confirmed by the shop.</p>
+</form></aside></div>
+<footer class="footer">© <span id="year"></span> Your Things • Local grocery shopping made easy<br>Product images load from external sources; if an image is unavailable, an emoji placeholder appears.</footer>
+</main><div id="toast" class="toast"></div>
+<script>
+const SHOP_WHATSAPP = "919448780704";
+const DELIVERY_FEE = 0;
+const categories = [
+{name:"All",emoji:"🛍️"},{name:"Snacks",emoji:"🍟"},{name:"Drinks",emoji:"🥤"},{name:"Biscuits",emoji:"🍪"},
+{name:"Staples",emoji:"🌾"},{name:"Dairy",emoji:"🥛"},{name:"Breakfast",emoji:"🥣"},{name:"Instant Food",emoji:"🍜"},
+{name:"Personal Care",emoji:"🧴"},{name:"Home Care",emoji:"🧹"},{name:"Chocolates",emoji:"🍫"}
+];
+const products = [
+{id:1,name:"Lay's Classic Salted Chips",brand:"Lay's",category:"Snacks",unit:"52 g",price:20,emoji:"🥔",image:"https://images.unsplash.com/photo-1566478989037-eec170784d0b?auto=format&fit=crop&w=400&q=75",keywords:"lays chips potato"},
+{id:2,name:"Kurkure Masala Munch",brand:"Kurkure",category:"Snacks",unit:"75 g",price:20,emoji:"🌶️",keywords:"kurkure namkeen"},
+{id:3,name:"Haldiram's Aloo Bhujia",brand:"Haldiram's",category:"Snacks",unit:"150 g",price:55,emoji:"🥨",keywords:"bhujia namkeen mixture"},
+{id:4,name:"Coca-Cola",brand:"Coca-Cola",category:"Drinks",unit:"750 ml",price:40,emoji:"🥤",keywords:"coke cold drink soda",image:"https://images.unsplash.com/photo-1554866585-cd94860890b7?auto=format&fit=crop&w=400&q=75"},
+{id:5,name:"Pepsi",brand:"Pepsi",category:"Drinks",unit:"750 ml",price:40,emoji:"🥤",keywords:"pepsi cola cold drink"},
+{id:6,name:"Sprite",brand:"Sprite",category:"Drinks",unit:"750 ml",price:40,emoji:"🍋",keywords:"sprite cold drink lemon"},
+{id:7,name:"Thums Up",brand:"Thums Up",category:"Drinks",unit:"750 ml",price:40,emoji:"🥤",keywords:"thumsup cola"},
+{id:8,name:"Amul Taaza Milk",brand:"Amul",category:"Dairy",unit:"500 ml",price:29,emoji:"🥛",keywords:"milk dairy"},
+{id:9,name:"Amul Butter",brand:"Amul",category:"Dairy",unit:"100 g",price:58,emoji:"🧈",keywords:"butter dairy"},
+{id:10,name:"Britannia Good Day Biscuits",brand:"Britannia",category:"Biscuits",unit:"120 g",price:30,emoji:"🍪",keywords:"good day biscuit cookies"},
+{id:11,name:"Parle-G Biscuits",brand:"Parle",category:"Biscuits",unit:"100 g",price:10,emoji:"🍪",keywords:"parleg glucose biscuit"},
+{id:12,name:"Oreo Chocolate Biscuits",brand:"Oreo",category:"Biscuits",unit:"120 g",price:35,emoji:"🍪",keywords:"oreo chocolate biscuit"},
+{id:13,name:"Cadbury Dairy Milk",brand:"Cadbury",category:"Chocolates",unit:"50 g approx.",price:40,emoji:"🍫",keywords:"dairy milk chocolate"},
+{id:14,name:"KitKat",brand:"Nestlé",category:"Chocolates",unit:"4-finger pack",price:35,emoji:"🍫",keywords:"kitkat chocolate"},
+{id:15,name:"Maggi 2-Minute Noodles",brand:"Maggi",category:"Instant Food",unit:"70 g",price:14,emoji:"🍜",keywords:"maggi noodles instant"},
+{id:16,name:"MTR Ready-to-Eat Upma",brand:"MTR",category:"Instant Food",unit:"300 g",price:95,emoji:"🍲",keywords:"mtr upma ready to eat"},
+{id:17,name:"MTR Masala Dosa Mix",brand:"MTR",category:"Breakfast",unit:"500 g",price:120,emoji:"🥞",keywords:"mtr dosa mix breakfast"},
+{id:18,name:"Tata Salt",brand:"Tata",category:"Staples",unit:"1 kg",price:28,emoji:"🧂",keywords:"salt tata"},
+{id:19,name:"Aashirvaad Atta",brand:"Aashirvaad",category:"Staples",unit:"5 kg",price:275,emoji:"🌾",keywords:"atta wheat flour"},
+{id:20,name:"India Gate Basmati Rice",brand:"India Gate",category:"Staples",unit:"1 kg",price:115,emoji:"🍚",keywords:"rice basmati"},
+{id:21,name:"Fortune Sunflower Oil",brand:"Fortune",category:"Staples",unit:"1 L",price:145,emoji:"🫗",keywords:"oil sunflower cooking"},
+{id:22,name:"Tata Sampann Toor Dal",brand:"Tata Sampann",category:"Staples",unit:"1 kg",price:180,emoji:"🫘",keywords:"dal pulses toor"},
+{id:23,name:"Nescafé Classic Coffee",brand:"Nescafé",category:"Breakfast",unit:"45 g",price:190,emoji:"☕",keywords:"coffee nescafe"},
+{id:24,name:"Tata Tea Gold",brand:"Tata Tea",category:"Breakfast",unit:"250 g",price:145,emoji:"🍵",keywords:"tea chai"},
+{id:25,name:"Surf Excel Easy Wash",brand:"Surf Excel",category:"Home Care",unit:"1 kg",price:110,emoji:"🧺",keywords:"detergent washing powder"},
+{id:26,name:"Vim Dishwash Bar",brand:"Vim",category:"Home Care",unit:"200 g",price:25,emoji:"🧽",keywords:"dishwash soap"},
+{id:27,name:"Harpic Power Plus",brand:"Harpic",category:"Home Care",unit:"500 ml",price:105,emoji:"🧴",keywords:"toilet cleaner"},
+{id:28,name:"Dove Soap",brand:"Dove",category:"Personal Care",unit:"100 g",price:58,emoji:"🧼",keywords:"soap bath"},
+{id:29,name:"Colgate Strong Teeth",brand:"Colgate",category:"Personal Care",unit:"150 g",price:95,emoji:"🪥",keywords:"toothpaste"},
+{id:30,name:"Clinic Plus Shampoo",brand:"Clinic Plus",category:"Personal Care",unit:"sachet",price:2,emoji:"🧴",keywords:"shampoo hair"}
+];
+let activeCategory="All",cart={};
+const money=n=>"₹"+Number(n).toLocaleString("en-IN");
+const escapeHTML=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.style.display="block";clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>t.style.display="none",2600)}
+function drawCategories(){document.getElementById("categories").innerHTML=categories.map(c=>`<button class="cat ${activeCategory===c.name?"active":""}" onclick="setCategory('${c.name.replace(/'/g,"\\'")}')"><span class="emoji">${c.emoji}</span>${c.name}</button>`).join("")}
+function setCategory(c){activeCategory=c;drawCategories();drawProducts()}
+function drawProducts(){
+const q=document.getElementById("search").value.trim().toLowerCase();
+const shown=products.filter(p=>(activeCategory==="All"||p.category===activeCategory)&&(!q||[p.name,p.brand,p.category,p.unit,p.keywords||""].join(" ").toLowerCase().includes(q)));
+document.getElementById("productCount").textContent=products.length+" starter items";
+document.getElementById("listTitle").textContent=q?`Search results (${shown.length})`:activeCategory==="All"?"Popular products":activeCategory;
+document.getElementById("products").innerHTML=shown.length?shown.map(p=>`<article class="product"><div class="photo">${p.image?`<img src="${p.image}" alt="${escapeHTML(p.name)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">`:""}<span class="fallback" style="${p.image?"display:none":""}">${p.emoji}</span></div><div class="brand">${escapeHTML(p.brand)}</div><h3>${escapeHTML(p.name)}</h3><div class="unit">${escapeHTML(p.unit)}</div><div class="pricebar"><span class="price">${money(p.price)}</span>${cart[p.id]?`<div class="qty"><button aria-label="Decrease quantity" onclick="changeQty(${p.id},-1)">−</button><span>${cart[p.id]}</span><button aria-label="Increase quantity" onclick="changeQty(${p.id},1)">+</button></div>`:`<button class="add" onclick="changeQty(${p.id},1)">ADD +</button>`}</div></article>`).join(""):`<div class="empty">No products found. Try another search or category.</div>`;
+}
+function changeQty(id,delta){cart[id]=(cart[id]||0)+delta;if(cart[id]<=0)delete cart[id];drawProducts();drawCart()}
+function drawCart(){
+const items=Object.entries(cart).map(([id,q])=>({p:products.find(p=>p.id===Number(id)),q})).filter(x=>x.p);
+const count=items.reduce((n,x)=>n+x.q,0),subtotal=items.reduce((n,x)=>n+x.p.price*x.q,0),total=subtotal+(count?DELIVERY_FEE:0);
+document.getElementById("cartCount").textContent=count;
+const box=document.getElementById("cartItems"),tot=document.getElementById("cartTotals");
+if(!count){box.className="cartempty";box.innerHTML="Your cart is empty.<br><br>Add products to get started.";tot.classList.add("hide")}
+else{box.className="";box.innerHTML=items.map(({p,q})=>`<div class="cartrow"><div><strong>${escapeHTML(p.name)}</strong><small>${money(p.price)} × ${q} = ${money(p.price*q)}</small></div><div class="qty"><button onclick="changeQty(${p.id},-1)">−</button><span>${q}</span><button onclick="changeQty(${p.id},1)">+</button></div></div>`).join("");tot.classList.remove("hide")}
+document.getElementById("subtotal").textContent=money(subtotal);
+document.getElementById("delivery").textContent=money(count?DELIVERY_FEE:0);
+document.getElementById("grandTotal").textContent=money(total);
+}
+document.getElementById("search").addEventListener("input",drawProducts);
+document.getElementById("checkout").addEventListener("submit",e=>{
+e.preventDefault();
+const items=Object.entries(cart).map(([id,q])=>({p:products.find(p=>p.id===Number(id)),q})).filter(x=>x.p);
+if(!items.length){toast("Please add products to your cart first.");return}
+const name=document.getElementById("customerName").value.trim(),phone=document.getElementById("customerPhone").value.trim(),address=document.getElementById("customerAddress").value.trim(),payment=document.querySelector('input[name="payment"]:checked').value;
+if(!/^[6-9]\d{9}$/.test(phone)){toast("Enter a valid 10-digit Indian mobile number.");return}
+const subtotal=items.reduce((s,x)=>s+x.p.price*x.q,0),total=subtotal+DELIVERY_FEE;
+const lines=items.map(({p,q})=>`• ${p.name} (${p.unit}) × ${q} — ${money(p.price*q)}`);
+const msg=`🛍️ *NEW ORDER — YOUR THINGS*\n\n*Customer:* ${name}\n*Phone:* ${phone}\n*Address:* ${address}\n\n*Items:*\n${lines.join("\n")}\n\nSubtotal: ${money(subtotal)}\nDelivery: ${money(DELIVERY_FEE)}\n*Total: ${money(total)}\n*Payment:* ${payment}\n\nPlease confirm product availability and delivery time.`;
+window.open("https://wa.me/"+SHOP_WHATSAPP+"?text="+encodeURIComponent(msg),"_blank");
+toast("WhatsApp opened. Press Send there to submit your order.");
+});
+document.getElementById("year").textContent=new Date().getFullYear();
+drawCategories();drawProducts();drawCart();
+</script>
+</body>
+</html>
